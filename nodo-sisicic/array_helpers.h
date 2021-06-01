@@ -7,21 +7,7 @@
 */
 
 /**
-    round2decimals() redondea variables de tipo float a 2 decimales.
-    Por ejemplo:
-        float var = 213.27123;
-        var = round2decimals(var);
-    Devuelve 213.27.
-    @param var Número a redondear.
-    @return Número rendondeado a 2 posiciones decimales.
-*/
-float round2decimals(float var) {
-    float value = (int)(var * 100 + 0.5);
-    return (float)(value / 100);
-}
-
-/**
-    getAverage() obtiene el promedio de los valores no nulos de un array.
+    compressArray() obtiene el promedio de los valores no nulos de un array de floats.
     Por ejemplo:
         int size = 2;
         float array[size] = {10.00, 11.00};
@@ -29,8 +15,9 @@ float round2decimals(float var) {
     Devuelve: 10.50.
     @param array Arreglo de números que se quiere promediar.
     @param size Cantidad de elementos del array.
+    @return Promedio de los valores no nulos del array.
 */
-float getAverage(float array[], int size) {
+float compressArray(float array[], int size) {
     float average = 0;
     int zerosFound = 0;
     for (int i = 0; i < size; i++) {
@@ -53,8 +40,9 @@ float getAverage(float array[], int size) {
 
     return average;
 }
+
 /**
-    cleanupArray() setea todos los números de un array en 0.
+    cleanupArray() resetea todos los elementos de un array.
     @param array Arreglo de números que se quiere limpiar.
     @param size Cantidad de elementos del array.
 */
