@@ -30,8 +30,10 @@
 
 // Sensores.
 #define EMON_CROSSINGS 20           // Cantidad de semi-ondas muestreadas para medir tensión y/o corriente.
-#define EMON_TIMEOUT 1000           // timeout de la rutina calcVI (en ms).
+#define EMON_TIMEOUT 1000           // Timeout de la rutina calcVI (en ms).
+#define PING_SAMPLES 5              // Cantidad de muestras ultrasónicos.
+#define MAX_DISTANCE 50             // Distancia a la pared.
 
 /// Valores mock.
-#define TENSION_MOCK 223.11         // Tensión de prueba.
-// #define TEMPERATURA_MOCK 23.11   // Temperatura de prueba.
+// #define TENSION_MOCK 223.11      // Tensión de prueba.
+#define TEMPERATURA_MOCK 23.11   // Temperatura de prueba.

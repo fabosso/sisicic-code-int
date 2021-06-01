@@ -9,6 +9,7 @@
 /**
     refreshAllSensors() se encarga de pedir el refresco de todos los sensores,
     poniendo cada uno de los flags del vector refreshRequested en true.
+    Depende directamente del valor definido SENSORS_QTY (ver constants.h).
 */
 void refreshAllSensors() {
     for (int i = 0; i < SENSORS_QTY; i++) {
@@ -22,6 +23,7 @@ void refreshAllSensors() {
 /**
     stopRefreshingAllSensors() se encarga de parar el refresco de todos los sensores,
     poniendo cada uno de los flags del vector refreshRequested en false.
+    Depende directamente del valor definido SENSORS_QTY (ver constants.h).
 */
 void stopRefreshingAllSensors() {
     for (int i = 0; i < SENSORS_QTY; i++) {
@@ -41,6 +43,7 @@ void getNewVoltage() {
     float newVoltage = 0.0;
     if (index < ARRAY_SIZE) {
         #ifndef TENSION_MOCK
+            eMon.calcVI(EMON_CROSSINGS, EMON_TIMEOUT);
             newVoltage = eMon.Vrms;
             voltages[index] = newVoltage;
         #else
@@ -61,7 +64,7 @@ void getNewVoltage() {
 */
 void getNewTemperature() {
     float newTemperature = 0.0;
-    if(index < ARRAY_SIZE) {
+    if (index < ARRAY_SIZE) {
         #ifndef TEMPERATURA_MOCK
             sensorDS18B20.requestTemperatures();
             newTemperature = sensorDS18B20.getTempCByIndex(0);
@@ -83,21 +86,10 @@ void getNewTemperature() {
     Cuando detecta un cambio de estado del sensor de presencia, pone en true el flag presenciaChanged.
 */
 void callbackPresencia() {
-    #ifdef PRESENCIA_PIN
-        if (presenciaLast == false) {
-            if (digitalRead(PRESENCIA_PIN) == PRESENCIA_ACTIVO) {
-                presenciaLast = true;
-                presenciaChanged = true;
-            }
-        } else {
-            if (digitalRead(PRESENCIA_PIN) == PRESENCIA_INACTIVO) {
-                presenciaLast = false;
-                presenciaChanged = true;
-            }
-        }
-    #else
-        if (runEvery(sec2ms(10), 4)) {
-            presenciaChanged = true;
-        }
-    #endif
+    float dist = 0.0;
+    dist = sonar.ping_median(PING_SAMPLES);
+    dist = sonar.convert_cm(dist);
+    if (dist < MAX_DISTANCE) {
+        presenciaDetected = true;
+    }
 }
