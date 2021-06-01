@@ -16,6 +16,9 @@
 #include <SPI.h>                // https://www.arduino.cc/en/reference/SPI
 #include <LoRa.h>               // https://github.com/sandeepmistry/arduino-LoRa
 
+// Biblioteca utilizada para manejar al HC-SR04.
+#include <NewPing.h>            // https://bitbucket.org/teckel12/arduino-new-ping/wiki/Home
+
 // Bibliotecas necesarias para manejar al DS18B20.
 #include <OneWire.h>            // https://www.pjrc.com/teensy/td_libs_OneWire.html
 #include <DallasTemperature.h>  // https://www.milesburton.com/Dallas_Temperature_Control_Library
@@ -58,16 +61,12 @@ int index = 0;
 bool dayTime = true;
 
 /**
-    presenciaChanged es un flag que se pone en true o false dependendiendo
+    presenciaDetected es un flag que se pone en true o false dependiendo
     del cambio de estado del sensor de presencia.
 */
-bool presenciaChanged = false;
+bool presenciaDetected = false;
 
-/**
-    presenciaLast es un flag que almacena el último cambio de estado del sensor
-    de preresencia
-*/
-bool presenciaLast = false;
+bool releChanged = false;
 
 /**
     refreshRequested contiene SENSORS_QTY variables booleanas que representan la necesidad
@@ -97,7 +96,7 @@ String incomingFull;
 const String greaterThanStr = ">";
 
 /**
-    receiverStr es una string que sólo contiene el identificador de nodo 
+    receiverStr es una string que sólo contiene el identificador de nodo
     recibido en un mensaje LoRa entrante.
 */
 String receiverStr;
@@ -125,6 +124,7 @@ const String knownCommands[KNOWN_COMMANDS_SIZE] = {
 #include "timing_helpers.h"     // Biblioteca propia.
 #include "sensors.h"            // Biblioteca propia.
 #include "actuators.h"          // Biblioteca propia.
+#include "decimal_helpers.h"    // Biblioteca propia.
 #include "array_helpers.h"      // Biblioteca propia.
 #include "LoRa_helpers.h"       // Biblioteca propia.
 
@@ -187,29 +187,28 @@ void loop() {
 
         // Reestablece el index de los arrays de medición.
         index = 0;
+
     }
 
     callbackAlert();
     callbackLoRaCommand();
     callbackPresencia();
-    callbackLights();
-
 
     if(runEvery(sec2ms(TIMEOUT_READ_SENSORS), 2)) {
         // Refresca TODOS los sensores.
         refreshAllSensors();
+        callbackLights();
         index++;
     }
 
-    if (refreshRequested[0] && !resetAlert && pitidosRestantes == 0) {
-        // Obtiene un nuevo valor de tensión.
-        #ifndef TENSION_MOCK
-            eMon.calcVI(EMON_CROSSINGS, EMON_TIMEOUT);
-        #endif
-        getNewVoltage();
-    }
-    if (refreshRequested[1] && !resetAlert && pitidosRestantes == 0) {
-        // Obtiene un nuevo valor de temperatura.
-        getNewTemperature();
+    if (!resetAlert && !pitidosRestantes) {
+        if (refreshRequested[0]) {
+            // Obtiene un nuevo valor de tensión.
+            getNewVoltage();
+        }
+        if (refreshRequested[1]) {
+            // Obtiene un nuevo valor de temperatura.
+            getNewTemperature();
+        }
     }
 }

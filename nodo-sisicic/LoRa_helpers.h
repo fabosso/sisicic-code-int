@@ -121,10 +121,10 @@ void composeLoRaPayload(float volts[], float temps[], String& rtn) {
 
     rtn += "voltage";
     rtn += "=";
-    rtn += getAverage(volts, ARRAY_SIZE);
+    rtn += compressArray(volts, ARRAY_SIZE);
 
     rtn += "&";
     rtn += "temperature";
     rtn += "=";
-    rtn += getAverage(temps, ARRAY_SIZE);
+    rtn += compressArray(temps, ARRAY_SIZE);
 }

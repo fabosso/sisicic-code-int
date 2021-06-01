@@ -65,11 +65,13 @@ void callbackLoRaCommand() {
 */
 void callbackLights() {
     if (dayTime) {
+        digitalWrite(RELE_PIN, RELE_ACTIVO);
         return;
     }
 
-    if (presenciaChanged) {
-        digitalWrite(RELE_PIN, !digitalRead(RELE_PIN));
-        presenciaChanged = false;
+    if (presenciaDetected) {
+        digitalWrite(RELE_PIN, RELE_ACTIVO);
+    } else {
+        digitalWrite(RELE_PIN, RELE_INACTIVO);
     }
 }
