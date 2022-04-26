@@ -18,8 +18,8 @@
 RS232 (1) - | [ ]A0       / N \       D9[ ]~| - RS232 (1).
 RS232 (1) - | [ ]A1      /  A  \      D8[ ] | - RS232 (1).
 RS232 (1) - | [ ]A2      \  N  /      D7[ ] | - RS232 (1).
-RS232 (2) - | [ ]A3       \_0_/       D6[ ]~| - Cable SparkOn.
-RS232 (2) - | [ ]A4/SDA               D5[ ]~| - Cable SparkOn.
+RS232 (2) - | [ ]A3       \_0_/       D6[ ]~| - Cable USB / SparkON.
+RS232 (2) - | [ ]A4/SDA               D5[ ]~| - Cable USB / SparkON.
 RS232 (2) - | [ ]A5/SCL               D4[ ] | - Reservado para RA-02.
 RS232 (2) - | [ ]A6              INT1/D3[ ]~| - Reservado para RA-02.
 RS232 (2) - | [ ]A7              INT0/D2[ ] | - Reservado para RA-02.
@@ -55,8 +55,8 @@ RS232 (2) - | [ ]A7              INT0/D2[ ] | - Reservado para RA-02.
 #define BUZZER_PIN 9
 // #define TEMPERATURA_PIN 8
 #define RELE_PIN 7
-#define PRESENCIA_ECHO_PIN 6
-#define PRESENCIA_TRIG_PIN 5
+#define PRESENCIA_ECHO_PIN 6    // A través de cable USB
+#define PRESENCIA_TRIG_PIN 5    // A través de cable USB
 
 // Definición de modo de trabajo.
 #define BUZZER_ACTIVO HIGH
