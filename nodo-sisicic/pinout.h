@@ -72,7 +72,10 @@ EnergyMonitor eMon;
     OneWire oneWireObjeto(TEMPERATURA_PIN);
     DallasTemperature sensorDS18B20(&oneWireObjeto);
 #endif
-NewPing sonar(PRESENCIA_TRIG_PIN, PRESENCIA_ECHO_PIN, 300);
+
+//HC-SR04
+#define MAX_DISTANCE 300 // Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm.
+NewPing sonar(PRESENCIA_TRIG_PIN, PRESENCIA_ECHO_PIN, MAX_DISTANCE);
 
 /**
     setupPinout() determina las I/Os digitales, inicializa al DS18B20
